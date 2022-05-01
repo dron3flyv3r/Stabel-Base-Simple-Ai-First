@@ -1,3 +1,4 @@
+from random import random
 import time
 import gym
 from gym import spaces
@@ -116,7 +117,7 @@ class PongWal(gym.Env):
         self.rect_change_y = 0
 
         #initial position of the ball
-        self.ball_x = 50
+        self.ball_x = int(random(50, 750))
         self.ball_y = 50
 
         #speed of the ball
