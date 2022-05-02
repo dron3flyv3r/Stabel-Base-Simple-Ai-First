@@ -23,7 +23,7 @@ env.reset()
 model = PPO("MlpPolicy", env, verbose=1, tensorboard_log=logdir)
 
 #here I train the and save it
-TIMESTAMP = 1000
+TIMESTAMP = 10000
 for i in range(1, 1000000000): 
     model.learn(total_timesteps=TIMESTAMP, reset_num_timesteps=False, tb_log_name="PPO")
     model.save(f"{models_dir}/{i*TIMESTAMP}")

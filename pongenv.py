@@ -1,10 +1,11 @@
-from random import random
 import time
-import gym
-from gym import spaces
+from collections import deque
+from random import random, randrange
+
 import numpy as np
 import pygame
-from collections import deque
+import gym
+from gym import spaces
 
 BLACK = (0,0,0)
 WHITE = (255,255,255)
@@ -26,7 +27,7 @@ class PongWal(gym.Env):
         self.action_space = spaces.Discrete(3)
         # Example for using image as input (channel-first; channel-last also works):
         self.observation_space = spaces.Box(low=-500, high=500,
-                                            shape=(6+POINT_GOL,), dtype=np.float32)
+                                            shape=(4+POINT_GOL,), dtype=np.float32)
 
     def step(self, action):
         self.prev_actions.append(action)
@@ -82,7 +83,7 @@ class PongWal(gym.Env):
         
         pygame.display.flip()  
 
-        self.reward_total = (((abs(self.ball_x - self.rect_x)*-1) + 400)*0.0001 + self.score * 100)
+        self.reward_total = (((abs(self.ball_x - self.rect_x)*-1) + 300)*0.1 + self.score * 100)
         self.reward = self.reward_total - self.prev_reward
         self.prev_reward = self.reward_total
 
@@ -91,7 +92,7 @@ class PongWal(gym.Env):
 
         self.info = {}
 
-        observation = [self.rect_x, self.rect_change_x, self.ball_x, self.ball_y, self.ball_change_x, self.ball_change_y] + list(self.prev_actions)
+        observation = [self.rect_x, self.rect_change_x, self.ball_x, self.ball_y] + list(self.prev_actions)
         observation = np.array(observation)
 
         return observation, self.reward, self.done, self.info
@@ -105,7 +106,7 @@ class PongWal(gym.Env):
         pygame.display.set_caption("pong")
 
         #Starting coordinates of the paddle
-        self.rect_x = 400
+        self.rect_x = randrange(50, 750)
         self.rect_y = 580
 
         #Make the game run
@@ -117,7 +118,7 @@ class PongWal(gym.Env):
         self.rect_change_y = 0
 
         #initial position of the ball
-        self.ball_x = int(random(50, 750))
+        self.ball_x = randrange(50, 750)
         self.ball_y = 50
 
         #speed of the ball
@@ -130,7 +131,7 @@ class PongWal(gym.Env):
         for i in range(POINT_GOL):
             self.prev_actions.append(-1) # to create history
 
-        observation = [self.rect_x, self.rect_change_x, self.ball_x, self.ball_y, self.ball_change_x, self.ball_change_y] + list(self.prev_actions)
+        observation = [self.rect_x, self.rect_change_x, self.ball_x, self.ball_y] + list(self.prev_actions)
         observation = np.array(observation)
 
         return observation  # reward, done, info can't be included
