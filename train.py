@@ -15,7 +15,7 @@ if not os.path.exists(models_dir):
 if not os.path.exists(logdir):
     os.makedirs(logdir)
 
-#here I set the envirement and reset it to start trining 
+#here I set the environment and reset it to start trining 
 env = PongWal()
 env.reset()
 
@@ -24,7 +24,7 @@ model = PPO("MlpPolicy", env, verbose=1, tensorboard_log=logdir)
 
 #here I train the and save it
 TIMESTAMP = 10000
-for i in range(1, 1000000000): 
+for i in range(1, 100000000000): 
     model.learn(total_timesteps=TIMESTAMP, reset_num_timesteps=False, tb_log_name="PPO")
     model.save(f"{models_dir}/{i*TIMESTAMP}")
 env.close()

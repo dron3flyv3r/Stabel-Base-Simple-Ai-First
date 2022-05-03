@@ -88,7 +88,7 @@ class PongWal(gym.Env):
         self.prev_reward = self.reward_total
 
         if self.done:
-            self.reward = - 10
+            self.reward = -100
 
         self.info = {}
 
@@ -103,7 +103,7 @@ class PongWal(gym.Env):
         #Initializing the display window
         self.size = (800,600)
         self.screen = pygame.display.set_mode(self.size)
-        pygame.display.set_caption("pong")
+        pygame.display.set_caption("pong A2C")
 
         #Starting coordinates of the paddle
         self.rect_x = randrange(50, 750)
